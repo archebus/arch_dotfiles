@@ -1,22 +1,29 @@
 {
+    "output": "eDP-1",
     "layer": "top",
     "position": "top",
-    "height": 36,
-    "spacing": 12,
+    "height": 38,
+    "spacing": 10,
     "margin-top": 8,
     "margin-left": 12,
     "margin-right": 12,
 
     "modules-left": [
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "hyprland/window"
     ],
 
-    "modules-center": [],
+    "modules-center": [
+        "clock"
+    ],
 
     "modules-right": [
-        "custom/vpn-minimal",
+        "tray",
+        "cpu",
+        "memory",
+        "temperature",
         "network",
-        "clock"
+        "battery",
     ],
 
     "hyprland/workspaces": {
@@ -24,28 +31,80 @@
         "all-outputs": true,
         "format": "{name}",
         "show-special": false,
-        "persistent-workspaces": {}
+    },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 50,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹  $1",
+            "(.*) - Spotify": "󰓇  $1",
+            "kitty": "󰄛 Terminal"
+        }
     },
 
     "clock": {
-        "format": "{:%H:%M}",
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>"
+        "format": "{:%a %b %d  %H:%M}",
+        "format-alt": "{:%Y-%m-%d %H:%M:%S}",
+        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+        "interval": 1
+    },
+
+    "cpu": {
+        "format": "<b>CPU:</b> {usage}%",
+        "tooltip": true,
+        "interval": 2,
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
+    },
+
+    "memory": {
+        "format": "<b>MEM:</b> {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}G/{total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G/{swapTotal:0.1f}G",
+        "interval": 2,
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
+    },
+
+    "temperature": {
+        "thermal-zone": 2,
+        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        "format": "<b>TMP:</b> {temperatureC}°C",
+        "format-critical": "<b>WRN:</b> {temperatureC}°C",
+        "interval": 2
     },
 
     "network": {
-        "format-wifi": "󰤨",
-        "format-ethernet": "󰈀",
-        "format-disconnected": "󰤭",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "Ethernet: {ipaddr}",
-        "tooltip-format-disconnected": "Disconnected"
+        "format-wifi": "<b>NET:</b> {signalStrength}%",
+        "format-disconnected": "<b>NET:</b> DC",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n󰇚 {bandwidthDownBits} 󰕒 {bandwidthUpBits}",
+        "tooltip-format-disconnected": "Disconnected",
+        "interval": 2
     },
 
-    "custom/vpn-minimal": {
-        "return-type": "json",
-        "exec": "python3 ~/.config/waybar/scripts/vpn_minimal.py",
-        "interval": 3,
-        "format": "{text}",
-        "tooltip": true
-    }
+    "battery": {
+        "bat": "BAT0",
+        "adapter": "ADP1",
+        "interval": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰂄 {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo} {power}W"
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    },
 }

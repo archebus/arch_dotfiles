@@ -1,8 +1,4 @@
--- Set <space> as the leader key
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
--- Install lazy.nvim if not installed
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -10,32 +6,152 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Basic settings
-vim.opt.number = true          -- Show line numbers
-vim.opt.relativenumber = false -- Relative line numbers
-vim.opt.tabstop = 4            -- Tab width
-vim.opt.softtabstop = 4        -- Tab stop positions when editing
-vim.opt.shiftwidth = 4         -- Indentation width
-vim.opt.expandtab = true       -- Use spaces instead of tabs
-vim.opt.smartindent = true     -- Smart indentation
-vim.opt.wrap = false           -- No text wrapping
-vim.opt.swapfile = false       -- No swapfile
-vim.opt.backup = false         -- No backup file
-vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
-vim.opt.undofile = true        -- Enable persistent undo
-vim.opt.hlsearch = false       -- Don't highlight all search matches
-vim.opt.incsearch = true       -- Incremental search
-vim.opt.termguicolors = true   -- True color support
-vim.opt.scrolloff = 8          -- Keep 8 lines above/below cursor
-vim.opt.signcolumn = "yes"     -- Always show sign column
-vim.opt.updatetime = 50        -- Faster update time
-vim.opt.colorcolumn = ""     -- Show column at 80 characters
+-- General settings
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+vim.opt.updatetime = 50
+vim.opt.colorcolumn = ""
 
--- Load plugins from lua/plugins directory
-require("lazy").setup("plugins")
+-- Transparency (adjust as needed)
+vim.opt.termguicolors = true
+vim.opt.winblend = 10
+vim.opt.pumblend = 10
+
+-- Leader key
+vim.g.mapleader = " "
+
+-- Plugin setup
+require("lazy").setup({
+
+	-- 256 Noir Theme
+	{
+		"https://github.com/andreasvc/vim-256noir",
+		config = function()
+		vim.cmd.colorscheme("256_noir")
+		end,
+	},
+
+	  -- LSP Configuration
+	  {
+	    "neovim/nvim-lspconfig",
+	    dependencies = {
+	      "williamboman/mason.nvim",
+	      "williamboman/mason-lspconfig.nvim",
+	    },
+	    config = function()
+	      require("mason").setup()
+	      require("mason-lspconfig").setup({
+		ensure_installed = { "rust_analyzer" },
+	      })
+	      
+	      local lspconfig = require("lspconfig")
+	      lspconfig.rust_analyzer.setup({
+		settings = {
+		  ["rust-analyzer"] = {
+		    checkOnSave = true,
+		  },
+		},
+	      })
+	    end,
+	  },
+
+  -- Treesitter for syntax highlighting
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "rust", "lua", "vim" },
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
+  },
+
+  -- Autocompletion
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+        }, {
+          { name = "buffer" },
+        }),
+      })
+    end,
+  },
+
+  -- File explorer
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("nvim-tree").setup()
+      vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+    end,
+  },
+
+  -- Fuzzy finder
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local telescope = require("telescope")
+      telescope.setup()
+      
+      local builtin = require("telescope.builtin")
+      vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+      vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+      vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+    end,
+  },
+})
+
+-- Key mappings
+vim.keymap.set("n", "<leader>w", ":w<CR>")
+vim.keymap.set("n", "<leader>q", ":q<CR>")
+	
+-- LSP key mappings
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local opts = { buffer = args.buf }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  end,
+})

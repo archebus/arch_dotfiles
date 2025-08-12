@@ -1,110 +1,50 @@
-/* ~/.config/waybar/style.css */
-/* Minimal Gruvbox Waybar */
+@define-color foreground #c1c1c1;
+@define-color foreground-inactive #7f8c8d;
+@define-color background #121212;
+@define-color background-alt #333333;
 
 * {
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 13px;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    min-height: 0;
-}
-
-/* Transparent waybar background */
-window#waybar {
-    background-color: transparent;
-    color: #ebdbb2;
-}
-
-/* Workspaces - floating rounded box */
-#workspaces {
-    background-color: rgba(29, 32, 33, 0.9);
-    border-radius: 12px;
-    padding: 4px 8px;
+    font-family: Mononoki Nerd Font;
+    font-size: 15px;
+    padding: 0;
     margin: 0;
+    color: @foreground;
+}
+
+#waybar {
+    color: @foreground;
+    background-color: @background;
+    border: 2px solid @background-alt;
 }
 
 #workspaces button {
-    padding: 4px 8px;
-    margin: 0 2px;
-    background-color: transparent;
-    color: #928374;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+    padding-left: 1em;
+    padding-right: 1.3em;
+}
+
+#workspaces button.empty {
+    color: @foreground-inactive;
 }
 
 #workspaces button.active {
-    background-color: #d79921;
-    color: #1d2021;
-    font-weight: 600;
+    background-color: @background-alt;
+    border-radius: 3px;
 }
 
-#workspaces button:hover {
-    background-color: rgba(215, 153, 33, 0.3);
-    color: #ebdbb2;
-}
-
-/* Individual module boxes */
-#clock,
+#wireplumber,
+#bat,
+#tray,
+#usage,
+#cpu,
+#memory,
+#temperature,
 #network,
-#custom-vpn-minimal {
-    background-color: rgba(29, 32, 33, 0.9);
-    color: #ebdbb2;
-    padding: 6px 12px;
-    margin: 0;
-    border-radius: 12px;
-}
-
-#network {
-    padding: 6px 17px 6px 12px;
-}
-
-#custom-vpn-minimal {
-    padding: 6px 15px 6px 12px;
-}
-
-/* Clock styling */
-#clock {
-    background-color: rgba(29, 32, 33, 0.9);
-    color: #d79921;
-    font-weight: 600;
-}
-
-/* Network module */
-#network {
-    background-color: rgba(29, 32, 33, 0.9);
-    color: #d79921;
-    font-size: 16px;
-}
-
-#network.disconnected {
-    color: #cc241d;
-}
-
-/* VPN module */
-#custom-vpn-minimal {
-    background-color: rgba(29, 32, 33, 0.9);
-    font-size: 16px;
-    color: #928374;
-}
-
-#custom-vpn-minimal.vpn-connected {
-    color: #d79921;
-}
-
-#custom-vpn-minimal.vpn-disconnected {
-    color: #928374;
-    background-color: rgba(29, 32, 33, 0.5);
-}
-
-/* Tooltip styling */
-tooltip {
-    background-color: rgba(29, 32, 33, 0.95);
-    border: 1px solid #d79921;
-    border-radius: 8px;
-}
-
-tooltip label {
-    color: #ebdbb2;
-    padding: 4px;
+#battery,
+#pulseaudio,
+#power,
+#net {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.3em;
 }

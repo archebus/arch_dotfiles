@@ -1,0 +1,140 @@
+[mgr]
+cwd = { fg = "white", bold = true }
+hovered = { bg = "darkgray" }
+preview_hovered = { underline = true }
+
+[status]
+separator_open = ""
+separator_close = ""
+mode_normal = { fg = "white", bold = true }
+mode_select = { fg = "lightblack", bg = "white", bold = true }
+mode_unset = { fg = "gray", bold = true }
+
+[select]
+border = { fg = "gray" }
+active = { fg = "white", bold = true }
+inactive = { fg = "gray" }
+
+[input]
+border = { fg = "gray" }
+title = { fg = "white" }
+value = { fg = "white" }
+selected = { bg = "darkgray" }
+
+[completion]
+border = { fg = "gray" }
+active = { fg = "white", bg = "darkgray" }
+inactive = { fg = "gray" }
+
+[tasks]
+border = { fg = "gray" }
+title = { fg = "white" }
+hovered = { fg = "white", underline = true }
+
+[which]
+mask = { bg = "#1a1a1a" }
+cand = { fg = "white", bold = true }
+rest = { fg = "gray" }
+desc = { fg = "lightblack" }
+separator = "  "
+separator_style = { fg = "darkgray" }
+
+[help]
+on = { fg = "white", bold = true }
+exec = { fg = "white" }
+desc = { fg = "gray" }
+hovered = { fg = "black", bg = "white" }
+footer = { fg = "lightblack", bg = "darkgray" }
+
+[notify]
+title_info = { fg = "white", bold = true }
+title_warn = { fg = "white", bold = true }
+title_error = { fg = "white", bold = true }
+icon_info = ""
+icon_warn = ""
+icon_error = ""
+content = { fg = "gray" }
+
+# File type colors - minimal differentiation using brightness/weight
+[filetype]
+rules = [
+	# Directories
+	{ name = "*/", fg = "white", bold = true },
+	
+	# Executables
+	{ name = "*", is = "exec", fg = "white", underline = true },
+	
+	# Hidden files
+	{ name = ".*", fg = "darkgray" },
+	
+	# Text files - slightly dimmed
+	{ name = "*.txt", fg = "lightblack" },
+	{ name = "*.md", fg = "lightblack" },
+	{ name = "*.rst", fg = "lightblack" },
+	{ name = "*.log", fg = "lightblack" },
+	
+	# Config files - dimmed
+	{ name = "*.toml", fg = "gray" },
+	{ name = "*.yaml", fg = "gray" },
+	{ name = "*.yml", fg = "gray" },
+	{ name = "*.json", fg = "gray" },
+	{ name = "*.ini", fg = "gray" },
+	{ name = "*.conf", fg = "gray" },
+	{ name = "*.cfg", fg = "gray" },
+	
+	# Code files - standard white
+	{ name = "*.py", fg = "white" },
+	{ name = "*.js", fg = "white" },
+	{ name = "*.ts", fg = "white" },
+	{ name = "*.rs", fg = "white" },
+	{ name = "*.go", fg = "white" },
+	{ name = "*.c", fg = "white" },
+	{ name = "*.cpp", fg = "white" },
+	{ name = "*.h", fg = "white" },
+	{ name = "*.java", fg = "white" },
+	{ name = "*.sh", fg = "white" },
+	
+	# Archives - bold for distinction
+	{ name = "*.zip", fg = "white", bold = true },
+	{ name = "*.tar", fg = "white", bold = true },
+	{ name = "*.gz", fg = "white", bold = true },
+	{ name = "*.xz", fg = "white", bold = true },
+	{ name = "*.7z", fg = "white", bold = true },
+	{ name = "*.rar", fg = "white", bold = true },
+	
+	# Images - slightly dimmed
+	{ name = "*.jpg", fg = "lightblack" },
+	{ name = "*.jpeg", fg = "lightblack" },
+	{ name = "*.png", fg = "lightblack" },
+	{ name = "*.gif", fg = "lightblack" },
+	{ name = "*.bmp", fg = "lightblack" },
+	{ name = "*.svg", fg = "lightblack" },
+	{ name = "*.webp", fg = "lightblack" },
+	
+	# Videos - slightly dimmed
+	{ name = "*.mp4", fg = "lightblack" },
+	{ name = "*.mkv", fg = "lightblack" },
+	{ name = "*.avi", fg = "lightblack" },
+	{ name = "*.mov", fg = "lightblack" },
+	{ name = "*.webm", fg = "lightblack" },
+	
+	# Audio - slightly dimmed
+	{ name = "*.mp3", fg = "lightblack" },
+	{ name = "*.flac", fg = "lightblack" },
+	{ name = "*.wav", fg = "lightblack" },
+	{ name = "*.ogg", fg = "lightblack" },
+	
+	# Documents - gray
+	{ name = "*.pdf", fg = "gray" },
+	{ name = "*.doc", fg = "gray" },
+	{ name = "*.docx", fg = "gray" },
+	{ name = "*.odt", fg = "gray" },
+	
+	# Special files
+	{ name = "Makefile", fg = "white", bold = true },
+	{ name = "Dockerfile", fg = "white", bold = true },
+	{ name = "README*", fg = "white", bold = true },
+	{ name = "LICENSE*", fg = "gray" },
+	{ name = ".gitignore", fg = "darkgray" },
+	{ name = ".gitmodules", fg = "darkgray" },
+]
